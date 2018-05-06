@@ -23,6 +23,7 @@ import com.google.ar.core.Anchor;
 import com.google.ar.core.Camera;
 import com.google.ar.core.Frame;
 import com.google.ar.core.Plane;
+import com.google.ar.core.Pose;
 import com.google.ar.core.Session;
 import com.google.ar.core.TrackingState;
 import com.google.ar.core.exceptions.CameraNotAvailableException;
@@ -222,6 +223,18 @@ public class SampleMain extends GVRMain {
 
             // Update passthrough object with last VR cam matrix
             updatePassThroughObject(mARPassThroughObject);
+
+
+            if (mARCoreHelper.getVirtObjCount() == 0) {
+                for (Plane plane : mLastARFrame.getUpdatedTrackables(Plane.class)) {
+                    if (plane.getType() == Plane.Type.HORIZONTAL_UPWARD_FACING && plane.getTrackingState() == TrackingState.TRACKING) {
+                        Pose pose = plane.getCenterPose();
+                        Anchor anchor = plane.createAnchor(pose);
+                        mARCoreHelper.addVirtualObject(anchor);
+                        break;
+                    }
+                }
+            }
 
             mARCoreHelper.updateVirtualObjects(mARViewMatrix, mGVRCamMatrix, AR2VR_SCALE);
 

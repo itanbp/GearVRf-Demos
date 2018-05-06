@@ -138,6 +138,11 @@ public class ARCoreHelper {
         }
     }
 
+    public int getVirtObjCount() {
+        return mVirtObjCount;
+    }
+
+
     private void addVirtualPlane(Plane plane) {
         GVRPlaneObject gvrPlane = new VirtualPlane(mGvrContext);
         gvrPlane.setARPlane(plane);
