@@ -133,7 +133,7 @@ public class ARCoreHelper {
                 a way to update GVRMesh at runtime.
                  */
                 GVRTransform t = gvrPlane.getChildByIndex(0).getTransform();
-                t.setScale(plane.getExtentX() * 0.95f, plane.getExtentZ() * 0.95f, 1.0f);
+                t.setScale(plane.getExtentX() * 0.95f, plane.getExtentZ() * 0.95f, 0.0f);
             }
         }
     }

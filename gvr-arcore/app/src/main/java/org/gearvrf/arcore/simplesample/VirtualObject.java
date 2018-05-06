@@ -57,7 +57,7 @@ public class VirtualObject extends GVRAnchorObject {
     }
 
     private void load3dModel(final GVRContext gvrContext) throws IOException {
-        
+
         EnumSet<GVRImportSettings> settings = GVRImportSettings.getRecommendedSettingsWith(EnumSet.of(GVRImportSettings.TRIANGULATE, GVRImportSettings.CALCULATE_NORMALS));
         GVRScene scene = gvrContext.getMainScene();
 
@@ -97,7 +97,7 @@ public class VirtualObject extends GVRAnchorObject {
         float sf = 1 / bv.radius;
         model.getTransform().setScale(sf, sf, sf);
         bv = model.getBoundingVolume();
-        model.getTransform().setPosition(x - bv.center.x, y - bv.center.y, z - bv.center.z);
+        model.getTransform().setPosition(x - bv.center.x, bv.center.y, z - bv.center.z);
     }
 
 
