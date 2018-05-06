@@ -17,12 +17,16 @@ package org.gearvrf.arcore.simplesample;
 
 import org.gearvrf.GVRCollider;
 import org.gearvrf.GVRContext;
+import org.gearvrf.GVRImportSettings;
 import org.gearvrf.GVRMeshCollider;
 import org.gearvrf.GVRRenderData;
+import org.gearvrf.GVRScene;
 import org.gearvrf.GVRSceneObject;
+import org.gearvrf.GVRTransform;
 import org.gearvrf.arcore.simplesample.arobjects.GVRAnchorObject;
 
 import java.io.IOException;
+import java.util.EnumSet;
 
 public class VirtualObject extends GVRAnchorObject {
     private static final float UNPICKED_COLOR_R = 0.7f;
@@ -53,7 +57,15 @@ public class VirtualObject extends GVRAnchorObject {
     }
 
     private void load3dModel(final GVRContext gvrContext) throws IOException {
-        final GVRSceneObject sceneObject = gvrContext.getAssetLoader().loadModel("objects/andy.obj");
+        
+        EnumSet<GVRImportSettings> settings = GVRImportSettings.getRecommendedSettingsWith(EnumSet.of(GVRImportSettings.TRIANGULATE, GVRImportSettings.CALCULATE_NORMALS));
+        GVRScene scene = gvrContext.getMainScene();
+
+
+        final GVRSceneObject sceneObject = gvrContext.getAssetLoader().loadModel("objects/CUPIC_SUBMARINE.obj", settings, true, scene);
+        centerModel(sceneObject, scene.getMainCameraRig().getTransform());
+
+
         addChildObject(sceneObject);
 
         sceneObject.forAllDescendants(new GVRSceneObject.SceneVisitor() {
@@ -75,6 +87,19 @@ public class VirtualObject extends GVRAnchorObject {
             }
         });
     }
+
+
+    private void centerModel(GVRSceneObject model, GVRTransform camTrans) {
+        GVRSceneObject.BoundingVolume bv = model.getBoundingVolume();
+        float x = camTrans.getPositionX();
+        float y = camTrans.getPositionY();
+        float z = camTrans.getPositionZ();
+        float sf = 1 / bv.radius;
+        model.getTransform().setScale(sf, sf, sf);
+        bv = model.getBoundingVolume();
+        model.getTransform().setPosition(x - bv.center.x, y - bv.center.y, z - bv.center.z);
+    }
+
 
     @Override
     public boolean update(float[] arViewMatrix, float[] vrCamMatrix, float scale) {
