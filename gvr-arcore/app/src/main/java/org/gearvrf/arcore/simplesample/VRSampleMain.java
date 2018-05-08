@@ -1,5 +1,6 @@
 package org.gearvrf.arcore.simplesample;
 
+import org.gearvrf.GVRCameraRig;
 import org.gearvrf.GVRContext;
 import org.gearvrf.GVRDirectLight;
 import org.gearvrf.GVRImportSettings;
@@ -39,6 +40,11 @@ public class VRSampleMain extends GVRMain {
         lightObj.attachComponent(toplight);
         lightObj.getTransform().setPosition(0, 2, 0);
         scene.addSceneObject(lightObj);
+
+        GVRCameraRig cameraRig = gvrContext.getMainScene().getMainCameraRig();
+        cameraRig.getLeftCamera().setBackgroundColor(1.0f, 0.0f, 0.0f, 1.0f);
+        cameraRig.getRightCamera().setBackgroundColor(0.0f, 1.0f, 0.0f, 1.0f);
+
         try
         {
             model = gvrContext.getAssetLoader().loadModel("objects/CUPIC_SUBMARINE.obj", settings, true, scene);
